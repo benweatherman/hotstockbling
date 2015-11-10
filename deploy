@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -e
+
+aws s3 cp build-output/hotstockbling.zip s3://hotstockbling/
+
+aws lambda update-function-code --function-name process_raw --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_raw --handler 'process_raw.lambda_handler'
+
+aws lambda update-function-code --function-name process_overview --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_overview --handler 'process_overview.lambda_handler'
+
+aws lambda update-function-code --function-name process_send --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_send --handler 'process_send.lambda_handler'
+
+aws lambda update-function-code --function-name process_parsed_overview --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_parsed_overview --handler 'process_parsed_overview.lambda_handler'
+
+aws lambda update-function-code --function-name process_help --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_help --handler 'process_help.lambda_handler'
+
+aws lambda update-function-code --function-name process_buy --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_buy --handler 'process_buy.lambda_handler'
+
+aws lambda update-function-code --function-name process_sell --s3-bucket 'hotstockbling' --s3-key 'hotstockbling.zip'
+aws lambda update-function-configuration --function-name process_sell --handler 'process_sell.lambda_handler'

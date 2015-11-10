@@ -1,0 +1,4 @@
+.env/
+build-output/
+*.pyc
+local_config.py

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+
+BASE_DIR=`pwd`
+function cleanup {
+    echo "Cleaning up..."
+    cd "$BASE_DIR"
+}
+trap cleanup EXIT
+
+
+ZIPFILE="hotstockbling.zip"
+ZIPFILE_PATH="$BASE_DIR/$ZIPFILE"
+BUILD_OUTPUT_PATH="build-output"
+PACKAGES=( requests twilio pytz httplib2 )
+
+echo "Building hotstockbling from $BASE_DIR..."
+
+rm -rf "$ZIPFILE_PATH" "$BUILD_OUTPUT_PATH"
+cd hotstockbling
+zip -9qXr "$ZIPFILE_PATH" *.py
+
+cd "$VIRTUAL_ENV/lib/python2.7/site-packages"
+for pkg in "${PACKAGES[@]}"; do
+    echo "Adding $pkg"
+    zip -9qXr --exclude=*.pyc "$ZIPFILE_PATH" "$pkg"
+done
+
+mkdir -p "$BASE_DIR/$BUILD_OUTPUT_PATH/"
+mv "$ZIPFILE_PATH" "$BASE_DIR/$BUILD_OUTPUT_PATH"
